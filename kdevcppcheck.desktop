@@ -1,0 +1,24 @@
+[Desktop Entry]
+Type=Service
+Exec=blubb
+Name=cppcheck
+GenericName=Static Code Analyzer
+Comment=This plugin integrates a static code analyzer (cppcheck) to KDevelop
+Icon=cppcheck
+ServiceTypes=KDevelop/Plugin
+X-KDE-Library=kdevgit
+X-KDE-PluginInfo-Author=Lambert CLARA
+X-KDE-PluginInfo-Email=lambert.clara@yahoo.fr
+X-KDE-PluginInfo-Name=kdevcppcheck
+X-KDE-PluginInfo-Version=0.1
+X-KDE-PluginInfo-Category=Utilities
+X-KDE-PluginInfo-License=GPL
+X-KDevelop-Version=12
+X-KDevelop-Category=Global
+X-KDevelop-Mode=GUI
+X-KDevelop-LoadMode=
+X-KDevelop-Language=C++
+X-KDevelop-SupportedMimeTypes=
+X-KDevelop-Interfaces=
+X-KDevelop-IOptional=
+X-KDevelop-IRequired=
