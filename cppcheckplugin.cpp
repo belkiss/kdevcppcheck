@@ -42,7 +42,7 @@ CCppcheckPlugin::CCppcheckPlugin(QObject *inpParent,
     IPlugin(KDevCppcheckFactory::componentData(), inpParent),
     m_hasError(false),
     m_errorDescription(""),
-    m_pFactory(new CCppcheckFactory())
+    m_pFactory(new CCppcheckFactory(this))
 {
     if(KStandardDirs::findExe("cppcheck").isEmpty())
     {

@@ -16,27 +16,17 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef CCPPCHECKWIDGET_H
+#define CCPPCHECKWIDGET_H
 
-#ifndef CCPPCHECKFACTORY_H
-#define CCPPCHECKFACTORY_H
+#include <QTreeView>
 
-#include <interfaces/iuicontroller.h>
-
-// forward declarations
-class CCppcheckPlugin;
-
-class CCppcheckFactory : public KDevelop::IToolViewFactory
+class CCppcheckWidget : public QTreeView
 {
+    Q_OBJECT
     public:
-        CCppcheckFactory(CCppcheckPlugin *inpPlugin);
-        virtual ~CCppcheckFactory();
-
-        virtual QWidget            *create(QWidget *inpParent = 0);
-        virtual QString             id() const;
-        virtual Qt::DockWidgetArea  defaultPosition();
-
-    private:
-        CCppcheckPlugin *m_pCppcheckPlugin;
+        CCppcheckWidget(QWidget *inpParent);
+        virtual ~CCppcheckWidget();
 };
 
-#endif // CCPPCHECKFACTORY_H
+#endif // CCPPCHECKWIDGET_H

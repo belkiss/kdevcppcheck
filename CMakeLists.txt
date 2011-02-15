@@ -12,6 +12,7 @@ include_directories(
 )
 
 set(kdevcppcheck_SRCS
+    ccppcheckwidget.cpp
     ccppcheckfactory.cpp
     cppcheckplugin.cpp
 )

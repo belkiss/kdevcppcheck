@@ -17,11 +17,13 @@
 */
 
 #include "ccppcheckfactory.h"
-
+#include "cppcheckplugin.h"
+#include "ccppcheckwidget.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-CCppcheckFactory::CCppcheckFactory()
+CCppcheckFactory::CCppcheckFactory(CCppcheckPlugin *inpPlugin):
+    m_pCppcheckPlugin(inpPlugin)
 {
 }
 
@@ -37,7 +39,8 @@ CCppcheckFactory::~CCppcheckFactory()
 ////////////////////////////////////////////////////////////////////////////////
 QWidget *CCppcheckFactory::create(QWidget *inpParent)
 {
-    return 0;
+    CCppcheckWidget *pCppcheckWidget = new CCppcheckWidget(inpParent);
+    return pCppcheckWidget;
 }
 
 
@@ -53,6 +56,6 @@ QString CCppcheckFactory::id() const
 ////////////////////////////////////////////////////////////////////////////////
 Qt::DockWidgetArea CCppcheckFactory::defaultPosition()
 {
-    return Qt::RightDockWidgetArea;
+    return Qt::BottomDockWidgetArea;
 }
 
