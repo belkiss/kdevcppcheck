@@ -17,6 +17,7 @@
 */
 
 #include "cppcheckplugin.h"
+#include "ccppcheckexecutor.h"
 
 #include <KPluginFactory>
 #include <KPluginLoader>
@@ -51,7 +52,9 @@ CCppcheckPlugin::CCppcheckPlugin(QObject *inpParent,
     }
     else
     {
-        core()->uiController()->addToolView(i18n("cppcheck"), m_pFactory);
+        CCppcheckExecutor cppcheck;
+        std::string name = "cppcheck " + cppcheck.getcppcheckVersion();
+        core()->uiController()->addToolView(i18n(name.c_str()), m_pFactory);
     }
 }
 
