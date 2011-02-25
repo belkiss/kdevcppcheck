@@ -59,6 +59,6 @@ void CCppcheckExecutor::reportErr(const ErrorLogger::ErrorMessage &/*inErrorMsg*
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-void CCppcheckExecutor::reportStatus(unsigned int inIndex, unsigned int inMax)
+void CCppcheckExecutor::reportStatus(unsigned int /*inIndex*/, unsigned int /*inMax*/)
 {
 }

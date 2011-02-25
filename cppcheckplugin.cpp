@@ -34,7 +34,7 @@ K_EXPORT_PLUGIN(KDevCppcheckFactory(KAboutData("kdevcppcheck",
                                                ki18n("cppcheck static code analyzer"),
                                                "0.1",
                                                ki18n("Launch the static code analyzer cppcheck"),
-                                               KAboutData::License_GPL)))
+                                               KAboutData::License_GPL_V3)))
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -45,17 +45,9 @@ CCppcheckPlugin::CCppcheckPlugin(QObject *inpParent,
     m_errorDescription(""),
     m_pFactory(new CCppcheckFactory(this))
 {
-    if(KStandardDirs::findExe("cppcheck").isEmpty())
-    {
-        m_hasError         = true;
-        m_errorDescription = i18n("cppcheck was not found");
-    }
-    else
-    {
-        CCppcheckExecutor cppcheck;
-        std::string name = "cppcheck " + cppcheck.getcppcheckVersion();
-        core()->uiController()->addToolView(i18n(name.c_str()), m_pFactory);
-    }
+    CCppcheckExecutor cppcheck;
+    std::string name = "cppcheck " + cppcheck.getcppcheckVersion();
+    core()->uiController()->addToolView(i18n(name.c_str()), m_pFactory);
 }
 
 
