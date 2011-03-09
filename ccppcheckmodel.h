@@ -16,33 +16,36 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef CPPCHECKPLUGIN_H
-#define CPPCHECKPLUGIN_H
+#ifndef CCPPCHECKMODEL_H
+#define CCPPCHECKMODEL_H
 
-#include <interfaces/iplugin.h>
-#include <QVariantList>
+#include <QStandardItemModel>
+#include <settings.h>
 
-class CCppcheckFactory;
-class CCppcheckModel;
+class CCppcheckPlugin;
 
-class CCppcheckPlugin : public KDevelop::IPlugin
+class CCppcheckModel : public QStandardItemModel
 {
     Q_OBJECT
     public:
-        CCppcheckPlugin(QObject *inpParent, const QVariantList &inArgs = QVariantList());
-        virtual ~CCppcheckPlugin();
+        CCppcheckModel(CCppcheckPlugin *inpParent);
+        virtual ~CCppcheckModel();
 
-        virtual bool      hasError()         const;
-        virtual QString   errorDescription() const;
+    public slots:
+        void parseCurrentFile();
 
-        CCppcheckModel   *getModel()         const;
+        void setShowErrors     (bool inShowErrors);
+        void setShowWarnings   (bool inShowWarnings);
+        void setShowStyle      (bool inShowStyle);
+        void setShowPortability(bool inShowPortability);
+        void setShowPerformance(bool inShowPerformance);
+        void setShowInformation(bool inShowInformation);
 
     private:
-        bool              m_hasError;
-        QString           m_errorDescription;
+        CCppcheckPlugin    *m_pCppcheckPlugin;
 
-        CCppcheckFactory *m_pFactory;
-        CCppcheckModel   *m_pCppcheckModel;
+        // cppcheck lib members
+        Settings            m_resultSettings;
 };
 
-#endif // CPPCHECKPLUGIN_H
+#endif // CCPPCHECKMODEL_H

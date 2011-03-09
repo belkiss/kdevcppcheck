@@ -12,7 +12,7 @@ SET(CPPCHECK_SRC "${CMAKE_BINARY_DIR}/externals/cppcheck")
 
 INCLUDE(ExternalProject)
 ExternalProject_Add(
-    cppcheck-1-47                # Name for custom target
+    cppcheck-1-47                 # Name for custom target
     # [DEPENDS projects...]       # Targets on which the project depends
     # [PREFIX dir]                # Root dir for entire project
     # [LIST_SEPARATOR sep]        # Sep to be replaced by ; in cmd lines
@@ -29,7 +29,7 @@ ExternalProject_Add(
     # [SVN_USERNAME john ]        # Username for Subversion checkout and update
     # [SVN_PASSWORD doe ]         # Password for Subversion checkout and update
     # GIT_REPOSITORY git://github.com/danmar/cppcheck.git # URL of git repo
-    # GIT_TAG        1.47 # Git branch name, commit id or tag
+    # GIT_TAG        1.47         # Git branch name, commit id or tag
     URL http://downloads.sourceforge.net/cppcheck/cppcheck-1.47.tar.bz2 # Full path or URL of source
     URL_MD5 e33263a34fdd9f3f3eeadbe3008fd498 # MD5 checksum of file at URL
     # [TIMEOUT seconds]           # Time allowed for file download operations
@@ -55,12 +55,12 @@ ExternalProject_Add(
     # [TEST_AFTER_INSTALL 1]      # Add test step executed after install step
     # [TEST_COMMAND cmd...]       # Command to drive test
     #--Output logging-------------
-    # LOG_DOWNLOAD 1                # Wrap download in script to log output
-    # LOG_UPDATE 1                  # Wrap update in script to log output
-    # LOG_CONFIGURE 1               # Wrap configure in script to log output
-    # LOG_BUILD 1                   # Wrap build in script to log output
-    # LOG_TEST 1                    # Wrap test in script to log output
-    # LOG_INSTALL 1                 # Wrap install in script to log output
+    # LOG_DOWNLOAD 1              # Wrap download in script to log output
+    # LOG_UPDATE 1                # Wrap update in script to log output
+    # LOG_CONFIGURE 1             # Wrap configure in script to log output
+    # LOG_BUILD 1                 # Wrap build in script to log output
+    # LOG_TEST 1                  # Wrap test in script to log output
+    # LOG_INSTALL 1               # Wrap install in script to log output
     #--Custom targets-------------
     # [STEP_TARGETS st1 st2 ...]  # Generate custom targets for these steps
 )
@@ -77,6 +77,18 @@ INCLUDE_DIRECTORIES(
 )
 
 SET(vendor_cppcheck_SRCS
+    ${CPPCHECK_SRC}/lib/checkautovariables.cpp
+    ${CPPCHECK_SRC}/lib/checkbufferoverrun.cpp
+    ${CPPCHECK_SRC}/lib/checkclass.cpp
+    ${CPPCHECK_SRC}/lib/checkexceptionsafety.cpp
+    ${CPPCHECK_SRC}/lib/checkobsoletefunctions.cpp
+    ${CPPCHECK_SRC}/lib/checkother.cpp
+    ${CPPCHECK_SRC}/lib/checkpostfixoperator.cpp
+    ${CPPCHECK_SRC}/lib/checkstl.cpp
+    ${CPPCHECK_SRC}/lib/checknullpointer.cpp
+    ${CPPCHECK_SRC}/lib/executionpath.cpp
+    ${CPPCHECK_SRC}/lib/checkuninitvar.cpp
+    ${CPPCHECK_SRC}/lib/checkmemoryleak.cpp
     ${CPPCHECK_SRC}/lib/checkunusedfunctions.cpp
     ${CPPCHECK_SRC}/lib/timer.cpp
     ${CPPCHECK_SRC}/lib/settings.cpp
@@ -96,6 +108,7 @@ SET_SOURCE_FILES_PROPERTIES(${vendor_cppcheck_SRCS} PROPERTIES
 
 SET(kdevcppcheck_SRCS
     ccppcheckexecutor.cpp
+    ccppcheckmodel.cpp
     ccppcheckwidget.cpp
     ccppcheckfactory.cpp
     cppcheckplugin.cpp
@@ -110,6 +123,7 @@ TARGET_LINK_LIBRARIES(kdevcppcheck
     ${KDEVPLATFORM_UTIL_LIBRARIES}
     ${KDEVPLATFORM_INTERFACES_LIBRARIES}
     ${KDEVPLATFORM_PROJECT_LIBRARIES}
+    ${KDEVPLATFORM_LANGUAGE_LIBRARIES}
 )
 
 ########### install files ###############

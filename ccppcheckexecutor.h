@@ -28,10 +28,8 @@ class CCppcheckExecutor : public ErrorLogger
         CCppcheckExecutor();
         virtual ~CCppcheckExecutor();
 
-        std::string getcppcheckVersion();
-
-        virtual void reportOut(const std::string &inOutputMsg);
-        virtual void reportErr(const ErrorLogger::ErrorMessage &inErrorMsg);
+        virtual void reportOut   (const std::string &inOutputMsg);
+        virtual void reportErr   (const ErrorLogger::ErrorMessage &inErrorMsg);
         virtual void reportStatus(unsigned int inIndex, unsigned int inMax);
 
     private:

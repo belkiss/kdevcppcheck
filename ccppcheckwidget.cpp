@@ -17,6 +17,8 @@
 */
 
 #include "ccppcheckwidget.h"
+#include "ccppcheckmodel.h"
+#include "cppcheckplugin.h"
 
 #include <KIcon>
 #include <KAction>
@@ -25,14 +27,26 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-CCppcheckWidget::CCppcheckWidget(QWidget* inpParent) :
-    QTreeView(inpParent)
+CCppcheckWidget::CCppcheckWidget(QWidget* inpParent,
+                                 CCppcheckPlugin *inpCppcheckPlugin) :
+    QTreeView(inpParent),
+    m_pCppcheckPlugin(inpCppcheckPlugin)
 {
     setObjectName("cppcheck plugin report");
     setWindowTitle("cppcheck");
     setWindowIcon(KIcon("cppcheck"));
     setRootIsDecorated(true);
-    setWhatsThis("cppcheck");
+    setWhatsThis("cppcheck plugin report");
+
+    setModel(m_pCppcheckPlugin->getModel());
+
+    KAction *pCheckCurrentFile = new KAction(this);
+    pCheckCurrentFile->setShortcutContext(Qt::WidgetWithChildrenShortcut);
+    pCheckCurrentFile->setText(i18n("(Re-)launch cppcheck on the current file"));
+    pCheckCurrentFile->setToolTip(i18n("(Re-)launch cppcheck on the current file"));
+    pCheckCurrentFile->setIcon(KIcon("view-refresh"));
+    connect(pCheckCurrentFile, SIGNAL(triggered(bool)), model(), SLOT(parseCurrentFile()));
+    addAction(pCheckCurrentFile);
 
     KAction *pActionShowErrors = new KAction(this);
     addAction(pActionShowErrors);
@@ -41,6 +55,8 @@ CCppcheckWidget::CCppcheckWidget(QWidget* inpParent) :
     pActionShowErrors->setText(i18n("Show errors"));
     pActionShowErrors->setToolTip(i18n("Show errors"));
     pActionShowErrors->setIcon(KIcon("user-busy"));
+    model()->setShowErrors(true);
+    connect(pActionShowErrors, SIGNAL(triggered(bool)), model(), SLOT(setShowErrors(bool)));
 
     KAction *pActionShowWarnings = new KAction(this);
     addAction(pActionShowWarnings);
@@ -49,6 +65,8 @@ CCppcheckWidget::CCppcheckWidget(QWidget* inpParent) :
     pActionShowWarnings->setText(i18n("Show warnings"));
     pActionShowWarnings->setToolTip(i18n("Show warnings"));
     pActionShowWarnings->setIcon(KIcon("dialog-warning"));
+    model()->setShowWarnings(true);
+    connect(pActionShowWarnings, SIGNAL(triggered(bool)), model(), SLOT(setShowWarnings(bool)));
 
     KAction *pActionShowStyle = new KAction(this);
     addAction(pActionShowStyle);
@@ -57,6 +75,8 @@ CCppcheckWidget::CCppcheckWidget(QWidget* inpParent) :
     pActionShowStyle->setText(i18n("Show style warnings"));
     pActionShowStyle->setToolTip(i18n("Show style warnings"));
     pActionShowStyle->setIcon(KIcon("help-hint"));
+    model()->setShowStyle(true);
+    connect(pActionShowStyle, SIGNAL(triggered(bool)), model(), SLOT(setShowStyle(bool)));
 
     KAction *pActionShowPortability = new KAction(this);
     addAction(pActionShowPortability);
@@ -65,6 +85,8 @@ CCppcheckWidget::CCppcheckWidget(QWidget* inpParent) :
     pActionShowPortability->setText(i18n("Show portability warnings"));
     pActionShowPortability->setToolTip(i18n("Show portability warnings"));
     pActionShowPortability->setIcon(KIcon("office-chart-ring"));
+    model()->setShowPortability(true);
+    connect(pActionShowPortability, SIGNAL(triggered(bool)), model(), SLOT(setShowPortability(bool)));
 
     KAction *pActionShowPerformance = new KAction(this);
     addAction(pActionShowPerformance);
@@ -73,6 +95,8 @@ CCppcheckWidget::CCppcheckWidget(QWidget* inpParent) :
     pActionShowPerformance->setText(i18n("Show performance warnings"));
     pActionShowPerformance->setToolTip(i18n("Show performance warnings"));
     pActionShowPerformance->setIcon(KIcon("fork"));
+    model()->setShowPerformance(true);
+    connect(pActionShowPerformance, SIGNAL(triggered(bool)), model(), SLOT(setShowPerformance(bool)));
 
     KAction *pActionShowInformation = new KAction(this);
     addAction(pActionShowInformation);
@@ -81,6 +105,8 @@ CCppcheckWidget::CCppcheckWidget(QWidget* inpParent) :
     pActionShowInformation->setText(i18n("Show information messages"));
     pActionShowInformation->setToolTip(i18n("Show information messages"));
     pActionShowInformation->setIcon(KIcon("help-about"));
+    model()->setShowInformation(true);
+    connect(pActionShowInformation, SIGNAL(triggered(bool)), model(), SLOT(setShowInformation(bool)));
 }
 
 
@@ -90,3 +116,10 @@ CCppcheckWidget::~CCppcheckWidget()
 {
 }
 
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+CCppcheckModel *CCppcheckWidget::model() const
+{
+    return static_cast<CCppcheckModel*>(QTreeView::model());
+}

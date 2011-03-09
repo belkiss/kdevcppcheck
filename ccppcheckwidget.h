@@ -21,12 +21,21 @@
 
 #include <QTreeView>
 
+class CCppcheckPlugin;
+class CCppcheckModel;
+
 class CCppcheckWidget : public QTreeView
 {
     Q_OBJECT
     public:
-        CCppcheckWidget(QWidget *inpParent);
+        CCppcheckWidget(QWidget *inpParent,
+                        CCppcheckPlugin *inpCppcheckPlugin);
         virtual ~CCppcheckWidget();
+
+        CCppcheckModel  *model() const;
+
+    private:
+        CCppcheckPlugin *m_pCppcheckPlugin;
 };
 
 #endif // CCPPCHECKWIDGET_H

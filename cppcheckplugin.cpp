@@ -17,7 +17,10 @@
 */
 
 #include "cppcheckplugin.h"
-#include "ccppcheckexecutor.h"
+#include "ccppcheckfactory.h"
+#include "ccppcheckmodel.h"
+
+#include "cppcheck.h"
 
 #include <KPluginFactory>
 #include <KPluginLoader>
@@ -29,11 +32,18 @@
 
 K_PLUGIN_FACTORY(KDevCppcheckFactory,
                  registerPlugin<CCppcheckPlugin>();)
-K_EXPORT_PLUGIN(KDevCppcheckFactory(KAboutData("kdevcppcheck",
+K_EXPORT_PLUGIN(KDevCppcheckFactory(KAboutData(// The program name used internally.
                                                "kdevcppcheck",
-                                               ki18n("cppcheck static code analyzer"),
+                                               // The message catalog name
+                                               // If null, program name is used instead.
+                                               0,
+                                               // A displayable program name string.
+                                               ki18n("Cppcheck static code analyzer"),
+                                               // The program version string.
                                                "0.1",
-                                               ki18n("Launch the static code analyzer cppcheck"),
+                                               // Short description of what the app does.
+                                               ki18n("Shows the static code analyzer cppcheck output in source code"),
+                                               // The license this code is released under
                                                KAboutData::License_GPL_V3)))
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -43,11 +53,12 @@ CCppcheckPlugin::CCppcheckPlugin(QObject *inpParent,
     IPlugin(KDevCppcheckFactory::componentData(), inpParent),
     m_hasError(false),
     m_errorDescription(""),
-    m_pFactory(new CCppcheckFactory(this))
+    m_pFactory(new CCppcheckFactory(this)),
+    m_pCppcheckModel(new CCppcheckModel(this))
 {
-    CCppcheckExecutor cppcheck;
-    std::string name = "cppcheck " + cppcheck.getcppcheckVersion();
-    core()->uiController()->addToolView(i18n(name.c_str()), m_pFactory);
+    QString name = "Cppcheck ";
+    name += CppCheck::version();
+    core()->uiController()->addToolView(i18n(qPrintable(name)), m_pFactory);
 }
 
 
@@ -55,7 +66,6 @@ CCppcheckPlugin::CCppcheckPlugin(QObject *inpParent,
 ////////////////////////////////////////////////////////////////////////////////
 CCppcheckPlugin::~CCppcheckPlugin()
 {
-
 }
 
 
@@ -73,3 +83,12 @@ QString CCppcheckPlugin::errorDescription() const
 {
     return KDevelop::IPlugin::errorDescription();
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+CCppcheckModel *CCppcheckPlugin::getModel() const
+{
+    return m_pCppcheckModel;
+}
+
