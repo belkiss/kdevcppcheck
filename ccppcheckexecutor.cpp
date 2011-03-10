@@ -48,7 +48,7 @@ void CCppcheckExecutor::reportOut(const std::string &inOutputMsg)
 ////////////////////////////////////////////////////////////////////////////////
 void CCppcheckExecutor::reportErr(const ErrorLogger::ErrorMessage &inErrorMsg)
 {
-    qDebug() << "Cppcheck plugin" << __LINE__ << __FUNCTION__ << inErrorMsg.toString(true, "{file} : {line}, {severity}, {id}, {message}").c_str();
+    emit signalCppcheckError(inErrorMsg);
 }
 
 

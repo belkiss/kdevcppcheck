@@ -143,6 +143,7 @@ void CCppcheckModel::parseCurrentFile()
 
         qDebug() << "Cppcheck plugin" << "Launch cppcheck on" << currentFileURL;
         CCppcheckExecutor cppcheckEx;
+        connect(&cppcheckEx, SIGNAL(signalCppcheckError(const ErrorLogger::ErrorMessage &)), this, SLOT(addCppcheckError(const ErrorLogger::ErrorMessage &)));
         CppCheck cppcheck(cppcheckEx);
         cppcheck.settings(m_resultSettings);
         cppcheck.addFile(currentFileURL.toLocalFile().toStdString());
@@ -200,4 +201,15 @@ void CCppcheckModel::setShowStyle(bool /*inShowStyle*/)
 void CCppcheckModel::setShowWarnings(bool /*inShowWarnings*/)
 {
 
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+void CCppcheckModel::addCppcheckError(const ErrorLogger::ErrorMessage &inCppcheckError)
+{
+    qDebug() << "Cppcheck plugin" << __LINE__ << __FUNCTION__ << inCppcheckError.toString(true, "{file} : {line}, {severity}, {id}, {message}").c_str();
+    QStandardItem *pRootItem = invisibleRootItem();
+    QStandardItem *pCppcheckErrorItem = new QStandardItem(QString::fromStdString(inCppcheckError.toString(true, "{file} : {line}, {severity}, {id}, {message}")));
+    pRootItem->appendRow(pCppcheckErrorItem);
 }

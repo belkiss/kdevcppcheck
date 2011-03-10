@@ -21,6 +21,7 @@
 
 #include <QStandardItemModel>
 #include <settings.h>
+#include <errorlogger.h>
 
 class CCppcheckPlugin;
 
@@ -40,6 +41,8 @@ class CCppcheckModel : public QStandardItemModel
         void setShowPortability(bool inShowPortability);
         void setShowPerformance(bool inShowPerformance);
         void setShowInformation(bool inShowInformation);
+
+        void addCppcheckError(const ErrorLogger::ErrorMessage &inCppcheckError);
 
     private:
         CCppcheckPlugin    *m_pCppcheckPlugin;

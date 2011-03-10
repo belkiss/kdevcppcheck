@@ -19,11 +19,13 @@
 #ifndef CCPPCHECKEXECUTOR_H
 #define CCPPCHECKEXECUTOR_H
 
+#include <QObject>
 #include "errorlogger.h"
 
 class CppCheck;
-class CCppcheckExecutor : public ErrorLogger
+class CCppcheckExecutor : public QObject, public ErrorLogger
 {
+    Q_OBJECT
     public:
         CCppcheckExecutor();
         virtual ~CCppcheckExecutor();
@@ -31,6 +33,9 @@ class CCppcheckExecutor : public ErrorLogger
         virtual void reportOut   (const std::string &inOutputMsg);
         virtual void reportErr   (const ErrorLogger::ErrorMessage &inErrorMsg);
         virtual void reportStatus(unsigned int inIndex, unsigned int inMax);
+
+    signals:
+        void signalCppcheckError(const ErrorLogger::ErrorMessage &inCppcheckError);
 
     private:
         CppCheck *m_pCppCheck;
