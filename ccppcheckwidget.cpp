@@ -17,7 +17,7 @@
 */
 
 #include "ccppcheckwidget.h"
-#include "ccppcheckmodel.h"
+#include "ccppcheckoutputmodel.h"
 #include "cppcheckplugin.h"
 
 #include <KIcon>
@@ -119,7 +119,7 @@ CCppcheckWidget::~CCppcheckWidget()
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-CCppcheckModel *CCppcheckWidget::model() const
+CCppcheckOutputModel *CCppcheckWidget::model() const
 {
-    return static_cast<CCppcheckModel*>(QTreeView::model());
+    return static_cast<CCppcheckOutputModel*>(QTreeView::model());
 }

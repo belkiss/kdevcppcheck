@@ -25,14 +25,16 @@
 
 class CCppcheckPlugin;
 
-class CCppcheckModel : public QStandardItemModel
+class CCppcheckOutputModel : public QStandardItemModel
 {
     Q_OBJECT
     public:
-        CCppcheckModel(CCppcheckPlugin *inpParent);
-        virtual ~CCppcheckModel();
+        CCppcheckOutputModel(CCppcheckPlugin *inpParent);
+        virtual ~CCppcheckOutputModel();
 
     public slots:
+        void activate(const QModelIndex &inIndex);
+
         void parseCurrentFile();
 
         void setShowErrors     (bool inShowErrors);

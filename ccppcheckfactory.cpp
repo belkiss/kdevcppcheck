@@ -19,7 +19,7 @@
 #include "ccppcheckfactory.h"
 #include "cppcheckplugin.h"
 #include "ccppcheckwidget.h"
-#include "ccppcheckmodel.h"
+#include "ccppcheckoutputmodel.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -40,8 +40,8 @@ CCppcheckFactory::~CCppcheckFactory()
 ////////////////////////////////////////////////////////////////////////////////
 QWidget *CCppcheckFactory::create(QWidget *inpParent)
 {
-    CCppcheckWidget *pCppcheckWidget = new CCppcheckWidget(inpParent, m_pCppcheckPlugin);
-    CCppcheckModel  *pCppcheckModel  = m_pCppcheckPlugin->getModel();
+    CCppcheckWidget      *pCppcheckWidget = new CCppcheckWidget(inpParent, m_pCppcheckPlugin);
+    CCppcheckOutputModel *pCppcheckModel  = m_pCppcheckPlugin->getModel();
     pCppcheckWidget->setModel(pCppcheckModel);
     return pCppcheckWidget;
 }

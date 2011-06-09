@@ -22,7 +22,7 @@
 #include <QTreeView>
 
 class CCppcheckPlugin;
-class CCppcheckModel;
+class CCppcheckOutputModel;
 
 class CCppcheckWidget : public QTreeView
 {
@@ -32,7 +32,7 @@ class CCppcheckWidget : public QTreeView
                         CCppcheckPlugin *inpCppcheckPlugin);
         virtual ~CCppcheckWidget();
 
-        CCppcheckModel  *model() const;
+        CCppcheckOutputModel *model() const;
 
     private:
         CCppcheckPlugin *m_pCppcheckPlugin;

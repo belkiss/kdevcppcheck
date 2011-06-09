@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "ccppcheckmodel.h"
+#include "ccppcheckoutputmodel.h"
 #include "cppcheckplugin.h"
 
 #include <interfaces/icore.h>
@@ -36,7 +36,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-CCppcheckModel::CCppcheckModel(CCppcheckPlugin *inpParent) :
+CCppcheckOutputModel::CCppcheckOutputModel(CCppcheckPlugin *inpParent) :
     QStandardItemModel(inpParent),
     m_pCppcheckPlugin(inpParent)
 {
@@ -61,7 +61,7 @@ CCppcheckModel::CCppcheckModel(CCppcheckPlugin *inpParent) :
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-CCppcheckModel::~CCppcheckModel()
+CCppcheckOutputModel::~CCppcheckOutputModel()
 {
     qDebug() << "Cppcheck plugin" << __FILE__ << ":" << __LINE__ << __FUNCTION__;
 }
@@ -69,8 +69,24 @@ CCppcheckModel::~CCppcheckModel()
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-void CCppcheckModel::parseCurrentFile()
+void CCppcheckOutputModel::activate(const QModelIndex &inIndex)
 {
+    qDebug() << "Cppcheck plugin" << __FILE__ << ":" << __LINE__ << __FUNCTION__;
+    if(inIndex.isValid())
+    {
+        QStandardItem *pCppcheckErrorItem = itemFromIndex(inIndex);
+        qDebug() << "Cppcheck plugin" << "Item activated :" << pCppcheckErrorItem->text();
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+void CCppcheckOutputModel::parseCurrentFile()
+{
+    // remove all "old results" from model
+    clear();
+
     qDebug() << "Cppcheck plugin" << __FILE__ << ":" << __LINE__ << __FUNCTION__<< "Parse button clicked";
     if(KDevelop::ICore::self()->documentController()->activeDocument())
     {
@@ -158,7 +174,7 @@ void CCppcheckModel::parseCurrentFile()
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-void CCppcheckModel::setShowErrors(bool /*inShowErrors*/)
+void CCppcheckOutputModel::setShowErrors(bool /*inShowErrors*/)
 {
 
 }
@@ -166,7 +182,7 @@ void CCppcheckModel::setShowErrors(bool /*inShowErrors*/)
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-void CCppcheckModel::setShowInformation(bool /*inShowInformation*/)
+void CCppcheckOutputModel::setShowInformation(bool /*inShowInformation*/)
 {
 
 }
@@ -174,7 +190,7 @@ void CCppcheckModel::setShowInformation(bool /*inShowInformation*/)
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-void CCppcheckModel::setShowPerformance(bool /*inShowPerformance*/)
+void CCppcheckOutputModel::setShowPerformance(bool /*inShowPerformance*/)
 {
 
 }
@@ -182,7 +198,7 @@ void CCppcheckModel::setShowPerformance(bool /*inShowPerformance*/)
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-void CCppcheckModel::setShowPortability(bool /*inShowPortability*/)
+void CCppcheckOutputModel::setShowPortability(bool /*inShowPortability*/)
 {
 
 }
@@ -190,7 +206,7 @@ void CCppcheckModel::setShowPortability(bool /*inShowPortability*/)
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-void CCppcheckModel::setShowStyle(bool /*inShowStyle*/)
+void CCppcheckOutputModel::setShowStyle(bool /*inShowStyle*/)
 {
 
 }
@@ -198,7 +214,7 @@ void CCppcheckModel::setShowStyle(bool /*inShowStyle*/)
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-void CCppcheckModel::setShowWarnings(bool /*inShowWarnings*/)
+void CCppcheckOutputModel::setShowWarnings(bool /*inShowWarnings*/)
 {
 
 }
@@ -206,10 +222,63 @@ void CCppcheckModel::setShowWarnings(bool /*inShowWarnings*/)
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-void CCppcheckModel::addCppcheckError(const ErrorLogger::ErrorMessage &inCppcheckError)
+void CCppcheckOutputModel::addCppcheckError(const ErrorLogger::ErrorMessage &inCppcheckError)
 {
     qDebug() << "Cppcheck plugin" << __LINE__ << __FUNCTION__ << inCppcheckError.toString(true, "{file} : {line}, {severity}, {id}, {message}").c_str();
     QStandardItem *pRootItem = invisibleRootItem();
-    QStandardItem *pCppcheckErrorItem = new QStandardItem(QString::fromStdString(inCppcheckError.toString(true, "{file} : {line}, {severity}, {id}, {message}")));
-    pRootItem->appendRow(pCppcheckErrorItem);
+    std::stringstream cppcheckErrorStrStr(inCppcheckError.toString(true, "{file} {line} {severity} {id}"));
+    std::string  fileFullPath;
+    unsigned int lineNumber;
+    std::string  severity;
+    std::string  id;
+    std::string  shortMessage;
+    std::string  longMessage;
+    cppcheckErrorStrStr >> fileFullPath >> lineNumber >> severity >> id;
+    shortMessage = inCppcheckError.toString(false, ":{line} {message}");
+    longMessage  = inCppcheckError.toString(true, "{message}");
+
+    QStandardItem *pCppcheckErrorItem = new QStandardItem();
+    pCppcheckErrorItem->setEditable(false);
+    pCppcheckErrorItem->setEnabled(true);
+    pCppcheckErrorItem->setSelectable(true);
+
+    KUrl fileUrl(fileFullPath.c_str());
+    QString prettyFilePath = KDevelop::ICore::self()->projectController()->prettyFileName(fileUrl, KDevelop::IProjectController::FormatPlain);
+
+    pCppcheckErrorItem->setText(prettyFilePath + QString::fromStdString(shortMessage));
+
+    // sets the long description as tooltip
+    pCppcheckErrorItem->setToolTip(QString::fromStdString(longMessage));
+    Severity::SeverityType sev = Severity::fromString(severity);
+    switch(sev)
+    {
+        case Severity::error:
+            pCppcheckErrorItem->setIcon(KIcon("user-busy"));
+            break;
+        case Severity::warning:
+            pCppcheckErrorItem->setIcon(KIcon("dialog-warning"));
+            break;
+        case Severity::style:
+            pCppcheckErrorItem->setIcon(KIcon("help-hint"));
+            break;
+        case Severity::performance:
+            pCppcheckErrorItem->setIcon(KIcon("fork"));
+            break;
+        case Severity::portability:
+            pCppcheckErrorItem->setIcon(KIcon("office-chart-ring"));
+            break;
+        case Severity::information:
+            pCppcheckErrorItem->setIcon(KIcon("help-about"));
+            break;
+        case Severity::debug:
+            pCppcheckErrorItem->setIcon(KIcon("tools-report-bug"));
+            break;
+        case Severity::none:
+        default:
+            pCppcheckErrorItem->setIcon(KIcon("edit-bomb"));
+    };
+    if(sev != Severity::debug)
+    {
+        pRootItem->appendRow(pCppcheckErrorItem);
+    }
 }

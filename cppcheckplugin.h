@@ -23,7 +23,7 @@
 #include <QVariantList>
 
 class CCppcheckFactory;
-class CCppcheckModel;
+class CCppcheckOutputModel;
 
 class CCppcheckPlugin : public KDevelop::IPlugin
 {
@@ -32,17 +32,17 @@ class CCppcheckPlugin : public KDevelop::IPlugin
         CCppcheckPlugin(QObject *inpParent, const QVariantList &inArgs = QVariantList());
         virtual ~CCppcheckPlugin();
 
-        virtual bool      hasError()         const;
-        virtual QString   errorDescription() const;
+        virtual bool          hasError()         const;
+        virtual QString       errorDescription() const;
 
-        CCppcheckModel   *getModel()         const;
+        CCppcheckOutputModel *getModel()         const;
 
     private:
-        bool              m_hasError;
-        QString           m_errorDescription;
+        bool                  m_hasError;
+        QString               m_errorDescription;
 
-        CCppcheckFactory *m_pFactory;
-        CCppcheckModel   *m_pCppcheckModel;
+        CCppcheckFactory     *m_pFactory;
+        CCppcheckOutputModel *m_pCppcheckModel;
 };
 
 #endif // CPPCHECKPLUGIN_H

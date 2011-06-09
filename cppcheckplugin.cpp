@@ -18,7 +18,7 @@
 
 #include "cppcheckplugin.h"
 #include "ccppcheckfactory.h"
-#include "ccppcheckmodel.h"
+#include "ccppcheckoutputmodel.h"
 
 #include "cppcheck.h"
 
@@ -54,7 +54,7 @@ CCppcheckPlugin::CCppcheckPlugin(QObject *inpParent,
     m_hasError(false),
     m_errorDescription(""),
     m_pFactory(new CCppcheckFactory(this)),
-    m_pCppcheckModel(new CCppcheckModel(this))
+    m_pCppcheckModel(new CCppcheckOutputModel(this))
 {
     QString name = "Cppcheck ";
     name += CppCheck::version();
@@ -87,7 +87,7 @@ QString CCppcheckPlugin::errorDescription() const
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-CCppcheckModel *CCppcheckPlugin::getModel() const
+CCppcheckOutputModel *CCppcheckPlugin::getModel() const
 {
     return m_pCppcheckModel;
 }

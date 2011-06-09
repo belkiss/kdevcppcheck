@@ -108,7 +108,7 @@ SET_SOURCE_FILES_PROPERTIES(${vendor_cppcheck_SRCS} PROPERTIES
 
 SET(kdevcppcheck_SRCS
     ccppcheckexecutor.cpp
-    ccppcheckmodel.cpp
+    ccppcheckoutputmodel.cpp
     ccppcheckwidget.cpp
     ccppcheckfactory.cpp
     cppcheckplugin.cpp
