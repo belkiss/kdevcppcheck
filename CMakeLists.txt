@@ -12,7 +12,7 @@ SET(CPPCHECK_SRC "${CMAKE_BINARY_DIR}/externals/cppcheck")
 
 INCLUDE(ExternalProject)
 ExternalProject_Add(
-    cppcheck-1-47                 # Name for custom target
+    cppcheck-1-48                 # Name for custom target
     # [DEPENDS projects...]       # Targets on which the project depends
     # [PREFIX dir]                # Root dir for entire project
     # [LIST_SEPARATOR sep]        # Sep to be replaced by ; in cmd lines
@@ -29,9 +29,9 @@ ExternalProject_Add(
     # [SVN_USERNAME john ]        # Username for Subversion checkout and update
     # [SVN_PASSWORD doe ]         # Password for Subversion checkout and update
     # GIT_REPOSITORY git://github.com/danmar/cppcheck.git # URL of git repo
-    # GIT_TAG        1.47         # Git branch name, commit id or tag
-    URL http://downloads.sourceforge.net/cppcheck/cppcheck-1.47.tar.bz2 # Full path or URL of source
-    URL_MD5 e33263a34fdd9f3f3eeadbe3008fd498 # MD5 checksum of file at URL
+    # GIT_TAG        1.48         # Git branch name, commit id or tag
+    URL http://downloads.sourceforge.net/cppcheck/cppcheck-1.48.tar.bz2 # Full path or URL of source
+    URL_MD5 64e09239da434f644ef785c9036d081a # MD5 checksum of file at URL
     # [TIMEOUT seconds]           # Time allowed for file download operations
     #--Update/Patch step----------
     # [UPDATE_COMMAND cmd...]     # Source work-tree update command
