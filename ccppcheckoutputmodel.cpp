@@ -162,9 +162,7 @@ void CCppcheckOutputModel::parseCurrentFile()
         connect(&cppcheckEx, SIGNAL(signalCppcheckError(const ErrorLogger::ErrorMessage &)), this, SLOT(addCppcheckError(const ErrorLogger::ErrorMessage &)));
         CppCheck cppcheck(cppcheckEx, true); // useGlobalSuppressions?
         cppcheck.settings(m_resultSettings);
-        cppcheck.addFile(currentFileURL.toLocalFile().toStdString());
-        unsigned int nbErrors = cppcheck.check();
-        cppcheck.clearFiles();
+        unsigned int nbErrors = cppcheck.check(currentFileURL.toLocalFile().toStdString());
         cppcheck.terminate();
         qDebug() << "Cppcheck plugin" << " cppcheck reported" << nbErrors << "errors on this file";
     }

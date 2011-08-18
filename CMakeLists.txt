@@ -12,7 +12,7 @@ SET(CPPCHECK_SRC "${CMAKE_BINARY_DIR}/externals/cppcheck")
 
 INCLUDE(ExternalProject)
 ExternalProject_Add(
-    cppcheck-1-48                 # Name for custom target
+    cppcheck-1-50                 # Name for custom target
     # [DEPENDS projects...]       # Targets on which the project depends
     # [PREFIX dir]                # Root dir for entire project
     # [LIST_SEPARATOR sep]        # Sep to be replaced by ; in cmd lines
@@ -30,8 +30,8 @@ ExternalProject_Add(
     # [SVN_PASSWORD doe ]         # Password for Subversion checkout and update
     # GIT_REPOSITORY git://github.com/danmar/cppcheck.git # URL of git repo
     # GIT_TAG        1.48         # Git branch name, commit id or tag
-    URL http://downloads.sourceforge.net/cppcheck/cppcheck-1.48.tar.bz2 # Full path or URL of source
-    URL_MD5 64e09239da434f644ef785c9036d081a # MD5 checksum of file at URL
+    URL http://downloads.sourceforge.net/cppcheck/cppcheck-1.50.tar.bz2 # Full path or URL of source
+    URL_MD5 79ef3898b246ba9c143155d5ad23dbd1 # MD5 checksum of file at URL
     # [TIMEOUT seconds]           # Time allowed for file download operations
     #--Update/Patch step----------
     # [UPDATE_COMMAND cmd...]     # Source work-tree update command
@@ -77,29 +77,33 @@ INCLUDE_DIRECTORIES(
 )
 
 SET(vendor_cppcheck_SRCS
+    ${CPPCHECK_SRC}/lib/check64bit.cpp
+    ${CPPCHECK_SRC}/lib/checkassignif.cpp
     ${CPPCHECK_SRC}/lib/checkautovariables.cpp
     ${CPPCHECK_SRC}/lib/checkbufferoverrun.cpp
     ${CPPCHECK_SRC}/lib/checkclass.cpp
     ${CPPCHECK_SRC}/lib/checkexceptionsafety.cpp
+    ${CPPCHECK_SRC}/lib/checkmemoryleak.cpp
+    ${CPPCHECK_SRC}/lib/checknonreentrantfunctions.cpp
+    ${CPPCHECK_SRC}/lib/checknullpointer.cpp
     ${CPPCHECK_SRC}/lib/checkobsoletefunctions.cpp
     ${CPPCHECK_SRC}/lib/checkother.cpp
     ${CPPCHECK_SRC}/lib/checkpostfixoperator.cpp
     ${CPPCHECK_SRC}/lib/checkstl.cpp
     ${CPPCHECK_SRC}/lib/checknullpointer.cpp
-    ${CPPCHECK_SRC}/lib/executionpath.cpp
     ${CPPCHECK_SRC}/lib/checkuninitvar.cpp
-    ${CPPCHECK_SRC}/lib/checkmemoryleak.cpp
     ${CPPCHECK_SRC}/lib/checkunusedfunctions.cpp
-    ${CPPCHECK_SRC}/lib/timer.cpp
-    ${CPPCHECK_SRC}/lib/settings.cpp
-    ${CPPCHECK_SRC}/lib/preprocessor.cpp
-    ${CPPCHECK_SRC}/lib/symboldatabase.cpp
+    ${CPPCHECK_SRC}/lib/cppcheck.cpp
+    ${CPPCHECK_SRC}/lib/errorlogger.cpp
+    ${CPPCHECK_SRC}/lib/executionpath.cpp
     ${CPPCHECK_SRC}/lib/mathlib.cpp
     ${CPPCHECK_SRC}/lib/path.cpp
-    ${CPPCHECK_SRC}/lib/errorlogger.cpp
+    ${CPPCHECK_SRC}/lib/preprocessor.cpp
+    ${CPPCHECK_SRC}/lib/settings.cpp
+    ${CPPCHECK_SRC}/lib/symboldatabase.cpp
+    ${CPPCHECK_SRC}/lib/timer.cpp
     ${CPPCHECK_SRC}/lib/token.cpp
     ${CPPCHECK_SRC}/lib/tokenize.cpp
-    ${CPPCHECK_SRC}/lib/cppcheck.cpp
 )
 # tell cmake the files might be missing (they aren't downloaded yet)
 SET_SOURCE_FILES_PROPERTIES(${vendor_cppcheck_SRCS} PROPERTIES
